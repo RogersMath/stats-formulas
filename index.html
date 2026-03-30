@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Introductory Statistics Formulas</title>
+
+<!-- GOOGLE FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- MATHJAX -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<style>
+:root {
+  --navy1: #08152C;
+  --navy2: #1A3B6E;
+  --cream: #FFF8E7;
+  --cream-paper: #FAF7F0;
+  --black: #000000;
+}
+
+/* GLOBAL */
+body {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  background: var(--cream-paper);
+  color: var(--black);
+  line-height: 1.6;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* HEADER */
+header {
+  background: linear-gradient(to bottom, var(--navy1), var(--navy2));
+  padding: 1.2rem 1rem;
+  text-align: center;
+  color: var(--cream);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+header h1 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-family: "Cinzel", serif;
+  line-height: 1.25;
+}
+
+/* HAMBURGER */
+.hamburger {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  width: 36px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 3001;
+}
+.hamburger span {
+  display: block;
+  height: 5px;
+  margin: 6px 0;
+  background: var(--cream);
+  border-radius: 4px;
+}
+
+/* MENU OVERLAY */
+#menuOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 2500;
+}
+#menuOverlay.active {
+  display: block;
+}
+
+/* SIDE MENU */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -260px;
+  width: 260px;
+  height: 100%;
+  background: var(--navy1);
+  color: var(--cream);
+  padding-top: 5rem;
+  transition: left .25s ease;
+  z-index: 3000;
+}
+.side-menu.open {
+  left: 0;
+}
+.menu-link {
+  display: block;
+  padding: 1rem 1.2rem;
+  color: var(--cream);
+  font-size: 1.2rem;
+  font-family: "Cinzel", serif;
+  text-decoration: none;
+  border-bottom: 1px solid var(--navy2);
+}
+.menu-link:hover {
+  background: var(--navy2);
+}
+
+/* MAIN */
+main {
+  margin-top: 120px;
+  position: relative;
+  min-height: calc(100vh - 180px);
+  overflow-x: hidden;
+}
+
+/* SECTION TRANSITIONS */
+.section {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  padding: 1rem;
+  opacity: 0;
+  transform: translateX(20px);
+  transition:
+    transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.section.active {
+  left: 0;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* SECTION HEADINGS */
+.family-title {
+  font-family: "Cinzel", serif;
+  font-size: 1.7rem;
+  color: var(--navy1);
+  margin-bottom: 1rem;
+}
+
+/* FORMULA CARDS */
+.formula-title {
+  font-family: "Cinzel", serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--navy1), var(--navy2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 0.3rem 0;
+}
+.formula-card {
+  background: var(--cream);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.formula-grid {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 800px) {
+  .formula-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* FOOTER */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--navy1);
+  color: var(--cream);
+  text-align: center;
+  padding: 0.8rem 1rem;
+  font-family: "Lato", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  z-index: 2000;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.3);
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+footer a {
+  color: var(--cream);
+  text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MENU OVERLAY -->
+<div id="menuOverlay"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+  <h1>Introductory Statistics<br>Formulas</h1>
+</header>
+
+<!-- SIDE MENU -->
+<nav class="side-menu" id="sidemenu" role="navigation">
+  <a class="menu-link" data-target="descStats" href="#">Descriptive Statistics</a>
+  <a class="menu-link" data-target="probBasics" href="#">Probability Basics</a>
+  <a class="menu-link" data-target="counting" href="#">Counting & Combinatorics</a>
+  <a class="menu-link" data-target="discrete" href="#">Discrete Distributions</a>
+  <a class="menu-link" data-target="normalDist" href="#">Normal Distribution</a>
+  <a class="menu-link" data-target="ci" href="#">Confidence Intervals</a>
+  <a class="menu-link" data-target="onePop" href="#">1‑Population Hypothesis Tests</a>
+  <a class="menu-link" data-target="twoPop" href="#">2‑Population Hypothesis Tests</a>
+  <a class="menu-link" data-target="sampleSize" href="#">Sample Size</a>
+  <a class="menu-link" data-target="glossary" href="#">Glossary</a>
+</nav>
+
+<main id="mainContent" role="main">
+
+<!-- 1. DESCRIPTIVE STATISTICS -->
+<section class="section active" id="descStats">
+  <h2 class="family-title">Descriptive Statistics</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Mean</h3>
+      $$\bar{x}=\frac{\sum x}{n}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Weighted Mean</h3>
+      $$\bar{x}=\frac{\sum wx}{\sum w}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Range</h3>
+      $$\text{Range}=\max(x)-\min(x)$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Sample Variance</h3>
+      $$s^2=\frac{\sum(x-\bar{x})^2}{n-1}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Sample Standard Deviation</h3>
+      $$s=\sqrt{\frac{\sum(x-\bar{x})^2}{n-1}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Population Variance</h3>
+      $$\sigma^2=\frac{\sum(x-\mu)^2}{N}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Population Standard Deviation</h3>
+      $$\sigma=\sqrt{\frac{\sum(x-\mu)^2}{N}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">z‑score</h3>
+      $$z=\frac{x-\mu}{\sigma}$$
+    </div>
+
+  </div>
+</section>
+
+<!-- 2. PROBABILITY BASICS -->
+<section class="section" id="probBasics">
+  <h2 class="family-title">Probability Basics</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Classical Probability</h3>
+      $$P(E)=\frac{\text{favorable}}{\text{possible}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Complement Rule</h3>
+      $$P(E')=1-P(E)$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Addition Rule</h3>
+      $$P(A\cup B)=P(A)+P(B)-P(A\cap B)$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Multiplication Rule</h3>
+      $$P(A\cap B)=P(A)P(B\mid A)$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Conditional Probability</h3>
+      $$P(A\mid B)=\frac{P(A\cap B)}{P(B)}$$
+    </div>
+
+  </div>
+</section>
+
+<!-- 3. COUNTING -->
+<section class="section" id="counting">
+  <h2 class="family-title">Counting & Combinatorics</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Factorial</h3>
+      $$n!=n(n-1)(n-2)\cdots1$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Permutations</h3>
+      $$_nP_r=\frac{n!}{(n-r)!}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Combinations</h3>
+      $$_nC_r=\frac{n!}{r!(n-r)!}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Binomial Coefficient</h3>
+      $$\binom{n}{r}=_nC_r$$
+    </div>
+
+  </div>
+</section>
+
+<!-- 4. DISCRETE DISTRIBUTIONS -->
+<section class="section" id="discrete">
+  <h2 class="family-title">Discrete Distributions</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Binomial PMF</h3>
+      $$P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Binomial Mean</h3>
+      $$\mu=np$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Binomial SD</h3>
+      $$\sigma=\sqrt{np(1-p)}$$
+    </div>
+
+  </div>
+</section>
+
+<!-- 5. NORMAL DISTRIBUTION -->
+<section class="section" id="normalDist">
+  <h2 class="family-title">Normal Distribution</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Standardization</h3>
+      $$z=\frac{x-\mu}{\sigma}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Empirical Rule</h3>
+      <p>68% within 1σ<br>95% within 2σ<br>99.7% within 3σ</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- 6. CONFIDENCE INTERVALS -->
+<section class="section" id="ci">
+  <h2 class="family-title">Confidence Intervals</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">CI for Mean (σ Known)</h3>
+      $$\bar{x}\pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">CI for Mean (σ Unknown)</h3>
+      $$\bar{x}\pm t_{\alpha/2}\frac{s}{\sqrt{n}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">CI for Proportion</h3>
+      $$\hat{p}\pm z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+    </div>
+
+  </div>
+</section>
+
+<!-- 7. ONE POP HYP TESTS -->
+<section class="section" id="onePop">
+  <h2 class="family-title">1‑Population Tests</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Mean (σ Known)</h3>
+      $$z=\frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Mean (σ Unknown)</h3>
+      $$t=\frac{\bar{x}-\mu_0}{s/\sqrt{n}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Proportion</h3>
+      $$z=\frac{\hat{p}-p_0}{\sqrt{p_0(1-p_0)/n}}$$
+    </div>
+
+  </div>
+</section>
+
+<!-- 8. TWO POP HYP TESTS -->
+<section class="section" id="twoPop">
+  <h2 class="family-title">2‑Population Tests</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Difference of Means (σ Known)</h3>
+      $$z=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}
+      {\sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Difference of Means (σ Unknown)</h3>
+      $$t=\frac{(\bar{x}_1-\bar{x}_2)-(\mu_1-\mu_2)}
+      {\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Difference of Proportions</h3>
+      $$z=\frac{\hat{p}_1-\hat{p}_2}
+      {\sqrt{\hat{p}(1-\hat{p})(\frac{1}{n_1}+\frac{1}{n_2})}}$$
+      <p>where \( \hat{p}=\frac{x_1+x_2}{n_1+n_2} \)</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- 9. SAMPLE SIZE -->
+<section class="section" id="sampleSize">
+  <h2 class="family-title">Sample Size</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Sample Size for Mean</h3>
+      $$n=\left(\frac{z_{\alpha/2}\sigma}{E}\right)^2$$
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Sample Size for Proportion</h3>
+      $$n=\frac{z_{\alpha/2}^2 p(1-p)}{E^2}$$
+      <p>If no estimate for \(p\), use 0.5</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- 10. GLOSSARY -->
+<section class="section" id="glossary">
+  <h2 class="family-title">Glossary of Symbols</h2>
+  <div class="formula-grid">
+
+    <div class="formula-card">
+      <h3 class="formula-title">Parameters</h3>
+      <p>\(\mu\): population mean<br>
+      \(\sigma\): population standard deviation<br>
+      \(p\): population proportion<br>
+      \(N\): population size</p>
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Statistics</h3>
+      <p>\(\bar{x}\): sample mean<br>
+      \(s\): sample standard deviation<br>
+      \(\hat{p}\): sample proportion<br>
+      \(n\): sample size</p>
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Test Notation</h3>
+      <p>\(z_{\alpha/2}\), \(t_{\alpha/2}\): critical values<br>
+      \(H_0, H_a\): null and alternative hypotheses</p>
+    </div>
+
+    <div class="formula-card">
+      <h3 class="formula-title">Distributions</h3>
+      <p>\(X\): random variable<br>
+      \(Z\): standard normal<br>
+      “pooled” \( \hat{p} \): combined sample proportion</p>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://pbsc.edu/slc/" target="_blank" rel="noopener">
+    Want tutors to help you perform at your very best?<br>
+    PBSC students click here
+  </a>
+</footer>
+
+<script>
+const sections = [
+  "descStats",
+  "probBasics",
+  "counting",
+  "discrete",
+  "normalDist",
+  "ci",
+  "onePop",
+  "twoPop",
+  "sampleSize",
+  "glossary"
+];
+let currentIndex = 0;
+
+const sidemenu = document.getElementById("sidemenu");
+const hamburger = document.getElementById("hamburger");
+const menuOverlay = document.getElementById("menuOverlay");
+
+hamburger.addEventListener("click", () => {
+  sidemenu.classList.toggle("open");
+  menuOverlay.classList.toggle("active");
+});
+menuOverlay.addEventListener("click", () => {
+  sidemenu.classList.remove("open");
+  menuOverlay.classList.remove("active");
+});
+
+document.querySelectorAll(".menu-link").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    sidemenu.classList.remove("open");
+    menuOverlay.classList.remove("active");
+    navigateTo(sections.indexOf(link.dataset.target));
+  });
+});
+
+function navigateTo(index) {
+  if (index < 0 || index >= sections.length || index === currentIndex) return;
+  document.getElementById(sections[currentIndex]).classList.remove("active");
+  document.getElementById(sections[index]).classList.add("active");
+  currentIndex = index;
+}
+
+let startX = 0;
+window.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+}, { passive: true });
+window.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+  if (startX - endX > 50) navigateTo(currentIndex + 1);
+  if (endX - startX > 50) navigateTo(currentIndex - 1);
+}, { passive: true });
+</script>
+
+</body>
+</html>
